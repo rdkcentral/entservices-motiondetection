@@ -39,6 +39,8 @@ else(RDK_SERVICES_L1_TEST)
         target_link_libraries(${MODULE_NAME} PRIVATE ${NAMESPACE}Plugins::${NAMESPACE}Plugins)
 endif(RDK_SERVICES_L1_TEST)
 
+target_link_libraries(-ltelemetry_msgsender)
+
 install(TARGETS ${MODULE_NAME}
         DESTINATION lib/${STORAGE_DIRECTORY}/plugins)
 
