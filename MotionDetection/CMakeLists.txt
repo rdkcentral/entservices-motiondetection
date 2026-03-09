@@ -39,7 +39,11 @@ else(RDK_SERVICES_L1_TEST)
         target_link_libraries(${MODULE_NAME} PRIVATE ${NAMESPACE}Plugins::${NAMESPACE}Plugins)
 endif(RDK_SERVICES_L1_TEST)
 
-target_link_libraries(-ltelemetry_msgsender)
+set(PLUGIN_NAME MotionDetection)
+set(MODULE_NAME ${NAMESPACE}${PLUGIN_NAME})
+set(PLUGIN_IMPLEMENTATION ${MODULE_NAME}Implementation)
+
+target_link_libraries(${PLUGIN_IMPLEMENTATION} PRIVATE -ltelemetry_msgsender)
 
 install(TARGETS ${MODULE_NAME}
         DESTINATION lib/${STORAGE_DIRECTORY}/plugins)
