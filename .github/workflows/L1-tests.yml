@@ -123,18 +123,18 @@ jobs:
           path: entservices-testframework
           ref: 2.0.0
 
-      - name: Checkout entservices-peripherals
+      - name: Checkout entservices-motiondetection
         if: ${{ inputs.caller_source == 'local' }}
         uses: actions/checkout@v3
         with:
-          path: entservices-peripherals
+          path: entservices-motiondetection
 
-      - name: Checkout entservices-peripherals-testframework
+      - name: Checkout entservices-motiondetection-testframework
         if: ${{ inputs.caller_source == 'testframework' }}
         uses: actions/checkout@v3
         with:
-          repository: rdkcentral/entservices-peripherals
-          path: entservices-peripherals
+          repository: rdkcentral/entservices-motiondetection
+          path: entservices-motiondetection
           ref: develop
 
       - name: Checkout googletest
@@ -326,7 +326,7 @@ jobs:
           -I $GITHUB_WORKSPACE/entservices-testframework/Tests/headers/ccec/drivers
           -I $GITHUB_WORKSPACE/entservices-testframework/Tests/headers/network
           -I $GITHUB_WORKSPACE/entservices-testframework/Tests
-          -I $GITHUB_WORKSPACE/entservices-peripherals/helpers
+          -I $GITHUB_WORKSPACE/entservices-motiondetection/helpers
           -I $GITHUB_WORKSPACE/Thunder/Source
           -I $GITHUB_WORKSPACE/Thunder/Source/core
           -I $GITHUB_WORKSPACE/install/usr/include
@@ -362,11 +362,11 @@ jobs:
           &&
           cmake --install build/mocks
 
-      - name: Build entservices-peripherals
+      - name: Build entservices-motiondetection
         run: >
           cmake -G Ninja
-          -S "$GITHUB_WORKSPACE/entservices-peripherals"
-          -B build/entservices-peripherals
+          -S "$GITHUB_WORKSPACE/entservices-motiondetection"
+          -B build/entservices-motiondetection
           -DCMAKE_INSTALL_PREFIX="$GITHUB_WORKSPACE/install/usr"
           -DCMAKE_MODULE_PATH="$GITHUB_WORKSPACE/install/tools/cmake"
           -DCMAKE_CXX_FLAGS="
@@ -433,9 +433,9 @@ jobs:
           -DUSE_THUNDER_R4=ON
           -DHIDE_NON_EXTERNAL_SYMBOLS=OFF
           &&
-          cmake --build build/entservices-peripherals -j8
+          cmake --build build/entservices-motiondetection -j8
           &&
-          cmake --install build/entservices-peripherals
+          cmake --install build/entservices-motiondetection
 
       - name: Build entservices-testframework
         run: >
@@ -459,7 +459,7 @@ jobs:
           -I $GITHUB_WORKSPACE/entservices-testframework/Tests/headers/rdk/iarmmgrs-hal
           -I $GITHUB_WORKSPACE/entservices-testframework/Tests/headers/ccec/drivers
           -I $GITHUB_WORKSPACE/entservices-testframework/Tests/headers/network
-          -I $GITHUB_WORKSPACE/entservices-peripherals/helpers
+          -I $GITHUB_WORKSPACE/entservices-motiondetection/helpers
           -I $GITHUB_WORKSPACE/entservices-testframework/Tests
           -I $GITHUB_WORKSPACE/Thunder/Source
           -I $GITHUB_WORKSPACE/Thunder/Source/core
@@ -631,12 +631,12 @@ jobs:
           &&
           lcov -c
           -o coverage.info
-          -d build/entservices-peripherals
+          -d build/entservices-motiondetection
           &&
           lcov
           -r coverage.info
           '/usr/include/*'
-          '*/build/entservices-peripherals/_deps/*'
+          '*/build/entservices-motiondetection/_deps/*'
           '*/install/usr/include/*'
           '*/Tests/headers/*'
           '*/Tests/mocks/*'
@@ -646,14 +646,14 @@ jobs:
           &&
           genhtml
           -o coverage
-          -t "entservices-peripherals coverage"
+          -t "entservices-motiondetection coverage"
           filtered_coverage.info
 
       - name: Upload artifacts
         if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v4
         with:
-          name: artifacts-L1-peripherals
+          name: artifacts-L1-motiondetection
           path: |
             coverage/
             valgrind_log
