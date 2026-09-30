@@ -90,6 +90,14 @@ jobs:
         with:
           path: entservices-motiondetection
 
+      - name: Checkout entservices-motiondetection-testframework
+        if: ${{ inputs.caller_source == 'testframework' }}
+        uses: actions/checkout@v3
+        with:
+          repository: rdkcentral/entservices-motiondetection
+          path: entservices-motiondetection
+          ref: develop
+
       - name: Checkout entservices-testframework
         uses: actions/checkout@v3
         with:
